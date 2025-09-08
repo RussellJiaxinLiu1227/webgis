@@ -3,8 +3,22 @@
 <head>
   <meta charset="utf-8">
   <title>Lab 2 for Web GIS</title>
+  <style>
+  html { height:100% }
+  body { height:100%; margin:0; padding:0 }
+  #map_canvas { height:60vh; width:100% }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsoFeiDQWFnriqI0qSuNKlamb_M64azFQ"></script>
+<script>
+  function initialize() {
+    var latlng = new google.maps.LatLng(35.306840, -80.732000);
+    var myOptions = { zoom:16, center:latlng, mapTypeId:google.maps.MapTypeId.HYBRID };
+    new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  }
+</script>
+
 </head>
-<body>
+<body onload="initialize()">
   <h1>Lab 2 for Web GIS</h1>
   <h3>Name: Jiaxin Liu</h3>
   <!-- Comments-->
@@ -42,6 +56,8 @@
     document.write("<br>");
     document.write("sum3(10, 20, 30) = " + sum3(10, 20, 30));
   </script>
+<h3>Interactive Map (Google Maps)</h3>
+<div id="map_canvas"></div>
 
 
 
