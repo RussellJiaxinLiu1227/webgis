@@ -1,90 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lab3: Web-based Mapping Using OpenLayers</title>
-
-  <!-- OpenLayers -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@7.1.0/ol.css">
-  <script src="https://cdn.jsdelivr.net/npm/ol@7.1.0/dist/ol.js"></script>
-
-  <!-- LayerSwitcher（用 jsDelivr，别再用 RawGit） -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol-layerswitcher@4.1.2/dist/ol-layerswitcher.css">
-  <script src="https://cdn.jsdelivr.net/npm/ol-layerswitcher@4.1.2/dist/ol-layerswitcher.js"></script>
-
-  <style>
-    html, body { height: 100%; margin: 0; }
-    #map { width: 100%; height: 70vh; }
-  </style>
-</head>
-<body>
-  <h3>Lab3: Web-based Mapping Using OpenLayers</h3>
-  <h4>Author: YOUR NAME HERE</h4>
-  <div id="map"></div>
-
-  <script>
-    // 底图：OSM
-    const OSM = new ol.layer.Tile({
-      title: 'OSM',
-      type: 'base',
-      visible: true,
-      source: new ol.source.OSM()
-    });
-
-    // 底图：Bing（用你自己的 Key）
-    const bing = new ol.layer.Tile({
-      title: 'Bing Aerial',
-      type: 'base',
-      visible: false,
-      source: new ol.source.BingMaps({
-        key: 'AvaGM7j2D9gs32ETYZ6JRReFZb8sdB8mXJTKUfzoNIXH_wYwBa03sDOQ54_ci_ZI',
-        imagerySet: 'Aerial'  // 可改：Road / AerialWithLabels / CanvasDark 等
-      })
-    });
-
-    // 底图组（便于 LayerSwitcher 单选）
-    const baseGroup = new ol.layer.Group({
-      title: 'Base maps',
-      layers: [OSM, bing]
-    });
-
-    // 叠加：WMS（HTTPS + 指定样式，州面有颜色）
-    const wms = new ol.layer.Tile({
-      title: 'States (WMS)',
-      visible: true,
-      source: new ol.source.TileWMS({
-        url: 'https://ahocevar.com/geoserver/wms', // Jade 有 HTTPS 后换回 Jade
-        params: {
-          LAYERS: 'topp:states',
-          STYLES: 'population',
-          TILED: true,
-          FORMAT: 'image/png',
-          TRANSPARENT: true
-        },
-        serverType: 'geoserver',
-        transition: 0
-      }),
-      opacity: 0.9
-    });
-
-    // 地图
-    const map = new ol.Map({
-      target: 'map',
-      layers: [baseGroup, wms],
-      view: new ol.View({
-        center: [-10997148, 4569099],
-        zoom: 4
-      })
-    });
-
-    // 图层切换器
-    map.addControl(new ol.control.LayerSwitcher({
-      tipLabel: 'Legend',
-      activationMode: 'click',
-      groupSelectStyle: 'children'
-    }));
-  </script>
-</body>
+<html>
+  <head>
+    <title>Lab3:Web-based Mapping Using OpenLayers </title>
+	<script src="https://cdn.jsdelivr.net/npm/ol@v7.1.0/dist/ol.js"></script>    
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.1.0/ol.css">
+	<link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/src/ol-layerswitcher.css"/>
+              <link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/examples/layerswitcher.css" />
+              <script src="https://rawgit.com/walkermatt/ol-layerswitcher/master/dist/ol-layerswitcher.js"></script>		
+  </head>
+  
+  <body>
+	<h3>Lab3: Web-based Mapping Using OpenLayers</h3>
+	<h4>Author: Jiaxin Liu</h4>
+    <div id="map" class="map", style = "width:800px; height: 600px"></div>
+	
+    <script>
+           	  
+          var OSM = new ol.layer.Tile({
+	title: 'OSM',
+	type: 'base',
+	visible: true,
+	source: new ol.source.OSM()
+	});
+		
+         var bing = new ol.layer.Tile({
+	title: 'Bing Map',
+	type: 'base',
+	visible: false,
+	source: new ol.source.BingMaps({
+	      key: 'AvaGM7j2D9gs32ETYZ6JRReFZb8sdB8mXJTKUfzoNIXH_wYwBa03sDOQ54_ci_ZI',
+	      imagerySet: 'Aerial'
+	      })
+              });	
+		
+          var wms = new ol.layer.Tile({
+	title: 'States',
+	extent: [-14392000, 2436200, -7279500, 6594375],
+	source: new ol.source.TileWMS({
+		url: 'https://ahocevar.com/geoserver/wms',
+		params: {'LAYERS': 'topp:states','TILED': true, 'STYLES': 'population'},
+		serverType: 'geoserver',
+		transition: 0
+		})
+	});
+	  
+            var group = new ol.layer.Group({
+	    'title': 'Base maps',
+	    layers: [OSM, bing]
+	    });
+		
+            var map = new ol.Map({
+	    target: 'map',
+	    layers: [group, wms],
+	    view: new ol.View({
+		center: [-10997148, 4569099],
+		zoom: 4
+		})
+		});	
+			
+          var layerSwitcher = new ol.control.LayerSwitcher({
+	 tipLabel: 'Legend' // Optional label for button
+	 });
+	  
+          map.addControl(layerSwitcher);
+	    	
+    </script>
+  </body>
 </html>
+
 
